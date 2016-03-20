@@ -6,6 +6,7 @@
 
 
 ** **
+
 Vox-webcompiler utiliza webpack para empaquetar sus módulos nodejs para usar en web.
 Cuando se utiliza vox-webcompiler para compilar a web, se hace referencia a los siguientes módulos preempaquetados siempre que sea necesario
 
@@ -21,6 +22,18 @@ Vox-webcompiler incluye los siguientes loaders:
 E incluye el plugin
 
 * extract-text-webpack-plugin
+
+## Instalación
+
+Para instalar en Windows abra una ventana del cmd como administrador:
+```sh
+> $ vox -install -g vox-webcompiler
+```
+
+En sistemas Unix deberá usar sudo
+```sh
+> $ sudo vox -install -g vox-webcompiler
+```
 
 
 ## Como usar
