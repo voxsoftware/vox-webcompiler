@@ -1,0 +1,10 @@
+{
+	"VW":{
+		"Web":{
+			"readPath": "./Web",
+			"Compiler":{
+				"readPath": "./Web/Compiler"
+			}
+		}
+	}
+}

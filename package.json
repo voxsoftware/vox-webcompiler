@@ -1,0 +1,28 @@
+{
+	"name": "vox-webcompiler",
+  	"description": "Empaquetador de módulos nodejs para usar en navegadores",
+  	"version": "0.0.1",
+	"main":"index.js",
+	"license":"MIT",
+	"author": {
+	  "name": "James Suárez",
+	  "email": "xtreme.maicolxt94@gmail.com"
+	},
+	"preferGlobal": true,
+	"maintainers": [
+	    {
+	      "name": "James",
+	      "email": "xtreme.maicolxt94@gmail"
+	    }
+
+	],
+	"dependencies": {
+    	"webpack": "^1.12.14",
+    	"file-loader": "^0.8.5",
+    	"css-loader": "^0.23.1",
+    	"less": "^2.3.1",
+    	"less-loader": "^2.2.2",
+    	"style-loader": "^0.13.0",
+    	"extract-text-webpack-plugin": "^1.x"
+    }
+}

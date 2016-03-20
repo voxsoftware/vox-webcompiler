@@ -1,0 +1,10 @@
+{
+    "bin":{
+        "vwc": {
+            "name": "Vox Web Compiler",
+            "id": "org.vox.webcompiler",
+            "comment": "Empaquetador de módulos nodejs para usar en navegadores",
+            "exec":"cli"
+        }
+    }
+}
