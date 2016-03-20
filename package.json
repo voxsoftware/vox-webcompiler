@@ -16,6 +16,10 @@
 	    }
 
 	],
+	"repository": {
+	    "type": "git",
+	    "url": "https://github.com/voxsoftware/vox-webcompiler"
+	},
 	"dependencies": {
     	"webpack": "^1.12.14",
     	"file-loader": "^0.8.5",
