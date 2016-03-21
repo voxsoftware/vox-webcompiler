@@ -28,6 +28,7 @@ class Cli{
 
 		var Command=new  core.VW.CommandLine.Parser()
 		Command.addParameter("core-basic")
+		Command.addParameter("core")
 		Command.addParameter("compile")
 		Command.addParameter("help")
 		Command.addParameter("min")
@@ -35,6 +36,7 @@ class Cli{
 		try{
 			Command.parse()
 			var options= Command.getAsOptionsObject()
+			core.VW.Web.Compiler.minimal= !!options.min
 			if(options.min)
 				options.p=true
 		}
@@ -51,6 +53,9 @@ class Cli{
 	static execute(options){
 		if(options["core-basic"]){
 			Cli.coreBasic(options)
+		}
+		else if(options.core){
+			Cli.core(options)
 		}
 		else if(options.compile){
 			Cli.compile(options)
@@ -71,6 +76,7 @@ class Cli{
 		return {
 			"-help": "Mostrar ayuda",	
 			"-core-basic": "Compilar el módulo core-basic y core-http",
+			"-core": "Compilar el módulo core",
 			"-compile": "Compilar un módulo (-compile [opciones ....] path)"
 		}
 	}
@@ -88,6 +94,25 @@ class Cli{
 				})
 			}
 			var resultado=await compilation.webpackCompile(config)
+			core.VW.Console.write(resultado.toString({colors:true}))
+		}
+		catch(e){
+			Cli.error(e)
+		}
+	}
+
+	static async core(options){
+		Cli.prompt()
+		core.VW.Console.writeLine().writeLine("Compilando core").writeLine()
+		try{
+			var compilation= core.VW.Web.Compiler.Compiler.core
+			var config= compilation.loadConfig(options)
+			if(options["out-dir"]){
+				config.forEach(function(conf){
+					conf.output.path= options["out-dir"]
+				})
+			}
+			var resultado=await compilation.compile(config)
 			core.VW.Console.write(resultado.toString({colors:true}))
 		}
 		catch(e){

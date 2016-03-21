@@ -6,6 +6,7 @@ var Resolver= require(__dirname + "/../../core-basic")
 var webpack= require("webpack")
 class Compiler{
 	
+
 	constructor(/*string */ path){
 		var stat= fs.statSync(path)
 		if(stat.isDirectory()){
@@ -97,11 +98,19 @@ class Compiler{
 	static get coreBasic(){
 		return new Compiler(__dirname + "/../../core-basic")
 	}
+	static get core(){
+		return new Compiler(__dirname + "/../../core")
+	}
 
 
 	static compileCoreBasic(options){
 		var compilation= Compiler.coreBasic
 		return compilation.webpackCompile(compilation.loadConfig(options))
+	}
+
+	static compileCore(options){
+		var compilation= Compiler.core
+		return compilation.compile(compilation.loadConfig(options))
 	}
 
 

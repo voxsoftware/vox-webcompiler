@@ -1,5 +1,5 @@
 var Path= require("path");
-var minimal= process.argv.indexOf("-p")>=0 || process.argv.indexOf("--optimize-minimize")>=0
+var minimal= core.VW.Web.Compiler.minimal
 var data = [
 	{
 		
