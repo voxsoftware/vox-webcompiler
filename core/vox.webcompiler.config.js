@@ -1,6 +1,7 @@
 var Path= require("path");
 var minimal= core.VW.Web.Compiler.minimal
 var data = {
+	"vwc-native":true,
 	node: {
 	    net: "empty",
 	    tls: "empty",
@@ -14,7 +15,7 @@ var data = {
     entry:  Path.normalize(__dirname + "/vw.js"),
     output: {
         path:  __dirname + "/../dist",
-        filename: minimal?"vox.min.js":"vox.js",
+        filename: minimal?"js/vox.min.js":"js/vox.js",
         libraryTarget: "umd"
     }
 }

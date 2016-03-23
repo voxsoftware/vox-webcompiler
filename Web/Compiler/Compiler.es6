@@ -6,7 +6,9 @@ var Resolver= require(__dirname + "/../../core-basic")
 var webpack= require("webpack")
 class Compiler{
 	
-
+	static showHelp(){
+		throw new core.System.Exception("Al parecer las opciones de configuración no son válidas")
+	}
 	constructor(/*string */ path){
 		var stat= fs.statSync(path)
 		if(stat.isDirectory()){
@@ -50,7 +52,7 @@ class Compiler{
 		}
 
 		options.config= Path.join(__dirname,"_config.js")
-		return this.$config= convertarg({}, options)
+		return this.$config= convertarg(Compiler, options)
 	}
 
 
@@ -63,8 +65,10 @@ class Compiler{
 
 		for(var i=0;i<config.length;i++){
 			var conf= config[i]
-			conf= Resolver.resolve(conf)
-			config[i]= conf
+			if(!conf["vwc-native"]){
+				conf= Resolver.resolve(conf)
+				config[i]= conf
+			}
 		}
 		return Compiler.webpackCompile(config)
 	}

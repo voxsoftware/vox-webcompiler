@@ -29,6 +29,7 @@
     	"style-loader": "^0.13.0",
     	"extract-text-webpack-plugin": "^1.x",
     	"symbol": "^0.2.1",
+    	"symbol": "^3.3.4",
     	"browser-request": "^0.3.3",
     	"node-waves": "^0.7.5"
     }

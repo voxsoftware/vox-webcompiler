@@ -22,7 +22,7 @@ class Cli{
 		core.VW.Console.write(" ERROR ")
 		core.VW.Console.resetColors()
 		core.VW.Console.foregroundColor= core.System.ConsoleColor.Yellow
-		core.VW.Console.write("", e.message||e.toString())
+		core.VW.Console.write("", e.stack||e.toString())
 	}
 	static cli(){
 
@@ -77,7 +77,7 @@ class Cli{
 			"-help": "Mostrar ayuda",	
 			"-core-basic": "Compilar el módulo core-basic y core-http",
 			"-core": "Compilar el módulo core",
-			"-compile": "Compilar un módulo (-compile [opciones ....] path)"
+			"-compile": "Compilar un módulo (-compile [opciones ....] [path])"
 		}
 	}
 
