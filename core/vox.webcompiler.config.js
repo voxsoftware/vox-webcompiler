@@ -12,6 +12,11 @@ var data = {
 	        { test: /\.json$/, loader: "json-loader" }
 		]
 	},
+	"resolve":{
+		"alias": {
+			"vox-core": Path.dirname(require.resolve("vox-core"))
+		}
+	},
     entry:  Path.normalize(__dirname + "/vw.js"),
     output: {
         path:  __dirname + "/../dist",

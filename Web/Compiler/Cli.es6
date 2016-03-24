@@ -1,5 +1,5 @@
 
-
+import Path from 'path'
 class Cli{
 	
 
@@ -90,7 +90,7 @@ class Cli{
 			var config= compilation.loadConfig(options)
 			if(options["out-dir"]){
 				config.forEach(function(conf){
-					conf.output.path= options["out-dir"]
+					conf.output.path= Path.resolve(options["out-dir"])
 				})
 			}
 			var resultado=await compilation.webpackCompile(config)
@@ -124,10 +124,10 @@ class Cli{
 		Cli.prompt()
 		core.VW.Console.writeLine()
 
-		if(options.values.length==0)
-			return Cli.error("Debe especificar en argumentos la ruta a compilar.")
+		//if(options.values.length==0)
+			//return Cli.error("Debe especificar en argumentos la ruta a compilar.")
 		try{
-			var compilation= new  core.VW.Web.Compiler.Compiler(options.values[0])
+			var compilation= new  core.VW.Web.Compiler.Compiler(Path.resolve(options.values[0]||""))
 			var config= compilation.loadConfig(options)
 			if(options["out-dir"]){
 				config.forEach(function(conf){

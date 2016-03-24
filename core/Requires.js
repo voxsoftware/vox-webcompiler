@@ -20,23 +20,23 @@ exports.module= function(name){
 	}
 
 	if(name=="System.Exception"){
-		return require("vox-core/gvw/System/Exception.js")
+		return require("vox-core/System/Exception.js")
 	}
 
 	if(name=="System.IEnum"){
-		return require("vox-core/gvw/System/IEnum.js")
+		return require("vox-core/System/IEnum.js")
 	}
 
 	if(name=="VW.Http.RequestArgs"){
-		return require("vox-core/gvw/VW/Http/RequestArgs.js")
+		return require("vox-core/VW/Http/RequestArgs.js")
 	}
 
 	if(name=="VW.TaskCancelledException"){
-		return require("vox-core/gvw/VW/TaskCancelledException.js")
+		return require("vox-core/VW/TaskCancelledException.js")
 	}
 
 	if(name=="VW.Http.HttpStatusCode"){
-		return require("vox-core/gvw/VW/Http/HttpStatusCode.js");
+		return require("vox-core/VW/Http/HttpStatusCode.js");
 	}
 
 }

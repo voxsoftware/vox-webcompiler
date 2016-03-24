@@ -1,5 +1,5 @@
 var webpack= require("webpack");
-
+var Path= require("path")
 
 var extend= function(obj1, obj2){
 	obj2= obj2||{}
@@ -35,7 +35,8 @@ exports.default= exports.resolve= function(obj){
 				"crypto": __dirname + "/crypto-replace.js",
 				"vm": __dirname + "/vm-replace.js",
 				"http": __dirname + "/http-replace.js",
-				"https": __dirname + "/https-replace.js"
+				"https": __dirname + "/https-replace.js",
+				"vox-core": Path.dirname(require.resolve("vox-core"))
 				/*,
 				"process": __dirname + "/process-obj-replace.js"*/
 			}

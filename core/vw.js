@@ -1,6 +1,8 @@
 // Módulo web de VW
 global.core= global.core ||{};
-var Requires= VoxModules
+
+require("./ShimGetterAndSetter.js")
+var Requires= require("./Requires")
 var util=Requires.module("VW.Util");
 
 
@@ -118,15 +120,18 @@ function moduleEcma2015(){
 
 function moduleVW_Web(){
 	var c= core.VW.Web= core.VW.Web || {};
-	if(typeof $ == "object"){
-		c.JQuery= $;
+	/*if(typeof window=="object" && typeof window.$ == "object"){
+		c.JQuery= window.$;
 	}
-	else{
+	else{*/
 		c.JQuery= require("./jquery-2.2.1.js");
+	//}
+	
+	var w= (typeof window=="object") ? window : {document:null}
+	if(!(w.document && w.document.registerElement)){
+		c.RegisterElement= require("./registerelement.js");
 	}
-
-	c.RegisterElement= require("./registerelement.js");
-	c.WebComponents= require("./webcomponents.js");
+	c.WebComponents= require("./webcomponents-lite.js");
 	c.Waves= require("node-waves");
 	c.Vox= require("./vox.js");
 	c.Templates= require("./Templates.js");	

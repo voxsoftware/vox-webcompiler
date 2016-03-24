@@ -22,7 +22,6 @@ function init(vox, $, document, root){
 
 
 		this.id= "vw-template"+id;
-		console.info(id)
 		id++;
 		obj.attr("uid", this.id)
 		this.obj= obj;
@@ -32,12 +31,46 @@ function init(vox, $, document, root){
 		this.name=this.obj.attr("name");
 		this.specname= this.name+"-host";
 		this.useshadow= this.obj.attr("dom-shadow")!== undefined;
-		console.info(this.useshadow)
-
-
 		this.init();
 	}
 
+
+	Template.prototype.importdata= function(target, e){
+		var p= e.attr("properties")
+		if(p)
+			p= p.split(",")
+
+		if(!p){
+			e.parent().data(target.data())
+		}
+		else{
+			for(var i=0;i<p.length;i++){
+				e.parent().data(p[i], target.data(p[i]))
+			}
+		}
+		e.remove()
+	}
+
+	Template.prototype.importattributes= function(target, e){
+		var p= e.attr("properties")
+		if(p)
+			p= p.split(",")
+		
+		
+		if(!p){
+			p=[]
+			var o= e.get(0).attributes
+			for(var i=0;i<o.length;i++)	{
+				p.push(o[i].name)
+			}
+		}
+		
+		for(var i=0;i<p.length;i++){
+			e.parent().attr(p[i], target.attr(p[i]))
+		}
+		
+		e.remove()	
+	}
 
 	Template.prototype.init= function(){
 		var name=this.name;
@@ -53,6 +86,8 @@ function init(vox, $, document, root){
 					ev.template= clone;
 					ev.current= this;
 
+					var data= null;
+
 
 					if(self.options.created){
 						self.options.created(ev);
@@ -64,9 +99,22 @@ function init(vox, $, document, root){
 
 					$(this).addClass(self.specname)
 
+					clone= ev.template;
+					var target= $(this);
+					$(clone).find("importdata").each(function(){
+						var e= $(this)
+						self.importdata(target,e)
+					})
+
+					$(clone).find("importattributes").each(function(){
+						var e= $(this)
+						self.importattributes(target,e)
+					})
+
+
 					if(!self.useshadow){
-						var target= $(this);
-						clone= ev.template;
+						
+						
 						$(clone).find("content").each(function(){
 							var e= $(this);
 							var sel= e.attr("sel");
@@ -140,12 +188,37 @@ function init(vox, $, document, root){
 		}));
 	}
 
-	$(function(){
+	$(function(){		
 		$("vw-template").each(function(){
 			procesar(this)
 		})
+
+		
+
+		var rels= $("link[rel='import']")
+		rels.on("load", function(){
+			var e= $(this);
+			var nodes;
+			var g= function(){
+				nodes=e.get(0).import
+				if(!nodes){
+					return setTimeout(g,10)
+				}
+				var link=nodes.querySelectorAll("link")
+				nodes=nodes.querySelectorAll("vw-template")
+				
+				for(var i=0;i<nodes.length;i++){
+					$("body").get(0).appendChild(document.importNode(nodes[i],true))			
+				}	
+				for(var i=0;i<link.length;i++){
+					$("head").get(0).appendChild(link[i])			
+				}	
+			}
+			g()				
+		})
+			
 	})
-	vox.mutation.watchAppend($("html"), function(ev){
+	vox.mutation.watchAppend($("html,body"), function(ev){
 		
 		ev.jTarget.each(function(){
 			procesar(this);	
@@ -153,14 +226,14 @@ function init(vox, $, document, root){
 
 
 	}, "vw-template")
-
+	exports.Template= Template
 
 }
 
-var $= core.VW.Web.JQuery;
+
 var odocument={};
 if(typeof document=="object"){
 	odocument=document;
 }
 var root= global;
-init(core.VW.Web.Vox, $,odocument,global);
+init(core.VW.Web.Vox, core.VW.Web.JQuery ,odocument,global);

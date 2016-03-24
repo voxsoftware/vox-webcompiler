@@ -423,6 +423,7 @@ function init(vox, $, window, document){
                 
                 j1.attr("vox-matched","");
             };
+            /*
             obj.bind("DOMNodeInserted", function(ev){
                 var inserted= $(ev.target);
                 var v=true;
@@ -449,7 +450,41 @@ function init(vox, $, window, document){
                     callback(ev);
                 }
                 
-            });
+            });*/
+            var observer= new MutationObserver(function(events){
+                for(var i=0;i<events.length;i++){
+                    var ev= events[i]
+                    var inserted= $(ev.addedNodes);
+                    var v=true;
+                    
+                    if(filter){
+                        var all= inserted.find("*");
+                        all= all.filter(filter);
+                        
+                        if(all.length>0){
+                            ev.jTarget= all;
+                            callback(ev);
+                        }
+                    }  
+                    
+                    
+                    if(filter){
+                        if(!inserted.is(filter)){
+                            v=false;
+                        }
+                    }
+                    
+                    if(v){
+                        ev.jTarget= inserted;
+                        callback(ev);
+                    }
+                }
+            })
+
+            obj.each(function(){
+                observer.observe(this, { childList: true, subtree: true });
+
+            })
         }
         
     }
