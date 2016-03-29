@@ -26,7 +26,7 @@ function init(vox, $, document, root){
 		obj.attr("uid", this.id)
 		this.obj= obj;
 		this.template= obj.find("template");
-		this.options=options;
+		this.options=options||{};
 		//this.style= obj.find("style");
 		this.name=this.obj.attr("name");
 		this.specname= this.name+"-host";
@@ -59,14 +59,21 @@ function init(vox, $, document, root){
 		
 		if(!p){
 			p=[]
-			var o= e.get(0).attributes
+			var o= target.get(0)
+			if(!o){
+				return 
+			}
+			o=o.attributes
 			for(var i=0;i<o.length;i++)	{
 				p.push(o[i].name)
 			}
 		}
 		
+		//console.info(p)
+		var pa= e.parent()
 		for(var i=0;i<p.length;i++){
-			e.parent().attr(p[i], target.attr(p[i]))
+			var atr= pa.attr(p[i])
+			pa.attr(p[i],  target.attr(p[i]) + (atr!=undefined ? (" "+atr) : ""))
 		}
 		
 		e.remove()	
@@ -85,31 +92,40 @@ function init(vox, $, document, root){
 					ev= vox.platform.createEvent("create");
 					ev.template= clone;
 					ev.current= this;
-
+					ev.self= self
 					var data= null;
 
+					
+					clone= ev.template;
+					var target= $(this);
+					$(clone).find("importdata").each(function(){
+						var e= $(this)
+						if(e.attr("sel")!==undefined)
+							self.importdata(target.find(e.attr("sel")), e)
+						else 
+							self.importdata(target,e)
+					})
 
-					if(self.options.created){
-						self.options.created(ev);
+					$(clone).find("importattributes").each(function(){
+						var e= $(this)
+						if(e.attr("sel")!==undefined)
+							self.importattributes(target.find(e.attr("sel")), e)
+						else 
+							self.importattributes(target,e)
+						
+					})
+
+
+					var created= self.options.created || self.obj.data("created")
+					if(created){
+						created(ev);
 					}
 
 					if(ev.defaultPrevented){
 						return;
 					}
-
 					$(this).addClass(self.specname)
-
 					clone= ev.template;
-					var target= $(this);
-					$(clone).find("importdata").each(function(){
-						var e= $(this)
-						self.importdata(target,e)
-					})
-
-					$(clone).find("importattributes").each(function(){
-						var e= $(this)
-						self.importattributes(target,e)
-					})
 
 
 					if(!self.useshadow){
@@ -120,6 +136,9 @@ function init(vox, $, document, root){
 							var sel= e.attr("sel");
 							if(!sel){
 								var nodes=target.get(0).childNodes;
+								if(e.attr("remove-empty")!==undefined && nodes.length<1){
+									e.parent().remove()
+								}
 								var first= true, l,q;
 								for(var i=0;i< nodes.length;i++){
 									if(first){
@@ -135,14 +154,26 @@ function init(vox, $, document, root){
 								}
 							}
 							else{
-								e.replaceWith(target.find(sel));
+								var nodes= target.find(sel)
+								if(e.attr("remove-empty")!==undefined && nodes.length<1){
+									e.parent().remove()
+								}
+								e.replaceWith(nodes);
 							}
+
+
 						});
+
+
+						target.find(">*").hide()
 						target.append(clone);
 					}
 					else{
 						this.createShadowRoot().appendChild(ev.template);	      		
 					}
+
+					target.attr("save-id", target.attr("id"))
+					target.removeAttr("id")
 
 				}
 			}
@@ -178,14 +209,13 @@ function init(vox, $, document, root){
 	document.createElement("vw-template");
 
 	var procesar= function(self){
-		var t=$(self);
-		var created= t.data("created");
-		if(t.data("vw-template")){
-			return; 
-		}
-		t.data("vw-template", new Template(t, {
-			created: created
-		}));
+		setTimeout(function(){
+			var t=$(self);
+			if(t.data("vw-template")){
+				return; 
+			}
+			t.data("vw-template", new Template(t));	
+		},100)
 	}
 
 	$(function(){		

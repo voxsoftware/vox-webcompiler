@@ -37,7 +37,7 @@ function init(vox, $, window, document){
                     if(pars.processEvent){
                         ev=pars.processEvent(ev);
                     }
-                    self.trigger("outerclick", ev);
+                    self.emit("outerclick", ev);
                     if(ev.defaultPrevented){
                         return; 
                     }
@@ -63,7 +63,7 @@ function init(vox, $, window, document){
                 if(pars.processEvent){
                     ev=pars.processEvent(ev);
                 }
-                self.trigger(ev.type, ev);
+                self.emit(ev.type, ev);
                 if(ev.defaultPrevented){
                     return; 
                 }
@@ -480,10 +480,10 @@ function init(vox, $, window, document){
                     }
                 }
             })
-
+            self.observers.push(observer)
             obj.each(function(){
+                console.info(observer)
                 observer.observe(this, { childList: true, subtree: true });
-
             })
         }
         
@@ -492,7 +492,7 @@ function init(vox, $, window, document){
     
     vox.platform= new platform();
     vox.mutation= new mutation();
-    
+    vox.mutation.observers=[];
     $.fn.voxanimate= function(effect, time, callback){
         vox.platform.animate(this, effect, time, callback);
     }
