@@ -59,6 +59,12 @@ function moduleHttp(){
 		}
 		return this.$HttpStatusCode;
 	}
+	core.VW.Http.get_RequestException= function(){
+		if(!this.$RequestException){
+			this.$RequestException= Requires.module("VW.Http.RequestException");
+		}
+		return this.$RequestException;
+	}
 	util.createProperties(core.VW.Http);
 }
 

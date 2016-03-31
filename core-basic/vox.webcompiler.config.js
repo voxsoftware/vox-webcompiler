@@ -17,7 +17,7 @@ var data = [
 	    }
 	},
 	{
-		"native":true,
+		"vwc-native":true,
 		module: {
 		    loaders: [
 		        { test: /\.json$/, loader: "json-loader" }

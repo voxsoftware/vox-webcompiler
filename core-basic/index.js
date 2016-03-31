@@ -45,6 +45,12 @@ exports.default= exports.resolve= function(obj){
 
 	extend(obj2, obj||{})
 	obj2.plugins= obj2.plugins||[]
+	obj2.module= obj2.module ||{}
+	obj2.module.loaders= obj2.module.loaders ||[]
+	obj2.module.loaders.push({
+		test: /\.es6$/,
+		loader: core.VW.Web.ES6Loader.filename
+	})
 	obj2.plugins.push(new webpack.ProvidePlugin({
 		"Buffer": __dirname + "/buffer-obj-replace.js"
 	}))

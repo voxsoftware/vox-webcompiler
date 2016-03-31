@@ -20,6 +20,30 @@ function init(vox, $, window, document){
         var f={};
         
         self.scrollObject= $(window);
+
+
+        self.getJsonResponseAsync= function(/*core.VW.Http.Request*/ request){
+            request.validateStatusCode= true
+            var task= request.getResponseAsync()
+
+            task.beforeExpose(function(){
+                try{
+                    var data= JSON.parse(task.result.body)
+                    if(data.error){
+                        task.exception= data.error
+                    }
+                    return data
+                }
+                catch(e){
+                    task.exception= "La respuesta no es válida. " + e.message
+                }
+            })
+
+            return task
+        }
+
+      
+
         self.attachOuterClick= function(obj, pars){
             
             var self= pars.self;

@@ -7,6 +7,10 @@ exports.module= function(name){
 		return require("vox-core/VW/Util.js")
 	}
 
+	if(name=="VW.Task"){
+		return require("vox-core/VW/Task.js")
+	}
+
 	if(name=="VW.Ecma2015.runtime"){
 		return require("vox-core/VW/Ecma2015/runtime.js")
 	}
@@ -29,6 +33,14 @@ exports.module= function(name){
 
 	if(name=="VW.Http.RequestArgs"){
 		return require("vox-core/VW/Http/RequestArgs.js")
+	}
+
+	if(name=="VW.Http.Request"){
+		return require("vox-core/VW/Http/Request.js")
+	}
+
+	if(name=="VW.Http.RequestException"){
+		return require("vox-core/VW/Http/RequestException.js")
 	}
 
 	if(name=="VW.TaskCancelledException"){
