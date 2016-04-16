@@ -4,7 +4,7 @@ global.core= global.core ||{};
 require("./ShimGetterAndSetter.js")
 var Requires= require("./Requires")
 var util=Requires.module("VW.Util");
-
+core.internalError= require("vox-core/submodules/vox-core-base/src/System/internal_error.js")
 
 
 // Añadir Symbol si no existe ...

@@ -65,10 +65,10 @@ class Compiler{
 
 		for(var i=0;i<config.length;i++){
 			var conf= config[i]
-			if(!conf["vwc-native"]){
+			//if(!conf["vwc-native"]){
 				conf= Resolver.resolve(conf)
 				config[i]= conf
-			}
+			//}
 		}
 		return Compiler.webpackCompile(config)
 	}

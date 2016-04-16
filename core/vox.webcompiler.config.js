@@ -1,7 +1,7 @@
 var Path= require("path");
 var minimal= core.VW.Web.Compiler.minimal
 var data = {
-	"vwc-native":true,
+	/*"vwc-native":true,*/
 	node: {
 	    net: "empty",
 	    tls: "empty",
@@ -11,12 +11,12 @@ var data = {
 	    loaders: [
 	        { test: /\.json$/, loader: "json-loader" }
 		]
-	},
+	},/*
 	"resolve":{
 		"alias": {
 			"vox-core": Path.dirname(require.resolve("vox-core"))
 		}
-	},
+	},*/
     entry:  Path.normalize(__dirname + "/vw.js"),
     output: {
         path:  __dirname + "/../dist",
