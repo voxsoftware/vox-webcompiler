@@ -23,6 +23,12 @@ E incluye el plugin
 
 * extract-text-webpack-plugin
 
+
+## Documentación
+
+* [Lista de cambios](/CHANGES.md)
+
+
 ## Instalación
 
 Para instalar en Windows abra una ventana del cmd como administrador:
