@@ -27,6 +27,10 @@ exports.module= function(name){
 		return require("vox-core/submodules/vox-core-base/src/System/Exception.js")
 	}
 
+	if(name=="System.ArgumentException"){
+		return require("vox-core/submodules/vox-core-base/src/System/ArgumentException.js")
+	}
+
 	if(name=="System.IEnum"){
 		return require("vox-core/submodules/vox-core-base/src/System/IEnum.js")
 	}

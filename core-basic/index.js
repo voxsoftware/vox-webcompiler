@@ -43,7 +43,8 @@ exports.default= exports.resolve= function(obj){
 					"vm": __dirname + "/vm-replace.js",
 					"http": __dirname + "/http-replace.js",
 					"https": __dirname + "/https-replace.js",
-					"vox-core": core.VW.path
+					"vox-core": core.VW.path,
+					"bluebird": require.resolve("bluebird")
 					/*,
 					"process": __dirname + "/process-obj-replace.js"*/
 				}
@@ -54,7 +55,8 @@ exports.default= exports.resolve= function(obj){
 		obj2= {
 			"resolve":{
 				"alias":{
-					"vox-core": core.VW.path
+					"vox-core": core.VW.path,
+					"bluebird": require.resolve("bluebird")
 				}
 			}
 		}

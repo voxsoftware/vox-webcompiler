@@ -6,7 +6,7 @@ var Resolver= require(__dirname + "/../../core-basic")
 var webpack= require("webpack")
 class Compiler{
 	
-	static showHelp(){
+	static showHelp(args){
 		throw new core.System.Exception("Al parecer las opciones de configuración no son válidas")
 	}
 	constructor(/*string */ path){

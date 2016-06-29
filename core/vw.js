@@ -14,7 +14,7 @@ if(typeof Symbol === "undefined"){
 
 
 function moduleVW(){
-	core.VW= core.VW ||{};	
+	core.VW= core.VW ||{};
 	core.VW.Util= util;
 	core.VW.get_Task= function(){
 		if(!this.$task){
@@ -39,7 +39,7 @@ function moduleVW(){
 
 
 function moduleHttp(){
-	core.VW= core.VW ||{};	
+	core.VW= core.VW ||{};
 	core.VW.Http= core.VW.Http||{};
 	core.VW.Http.get_RequestArgs= function(){
 		if(!this.$reqargs){
@@ -72,10 +72,16 @@ function moduleHttp(){
 
 
 function moduleSystem(){
-	core.System= core.System ||{};	
+	core.System= core.System ||{};
 	core.System.get_Exception= function(){
 		if(!this.$exception){
 			this.$exception= Requires.module("System.Exception")
+		}
+		return this.$exception;
+	}
+	core.System.get_ArgumentException= function(){
+		if(!this.$exception){
+			this.$exception= Requires.module("System.Argument.Exception")
 		}
 		return this.$exception;
 	}
@@ -131,16 +137,19 @@ function moduleVW_Web(){
 	}
 	else{*/
 		c.JQuery= require("./jquery-2.2.1.js");
+
 	//}
-	
+
 	var w= (typeof window=="object") ? window : {document:null}
+	w.$= c.JQuery
+	w.jQuery= c.JQuery
 	if(!(w.document && w.document.registerElement)){
 		c.RegisterElement= require("./registerelement.js");
 	}
 	c.WebComponents= require("./webcomponents-lite.js");
 	c.Waves= require("node-waves");
 	c.Vox= require("./vox.js");
-	c.Templates= require("./Templates.js");	
+	c.Templates= require("./Templates.js");
 }
 
 
@@ -150,4 +159,4 @@ moduleHttp();
 moduleSystem();
 moduleVW_Web();
 moduleEcma2015();
-exports= module.exports= core.VW;
+exports= module.exports= core;

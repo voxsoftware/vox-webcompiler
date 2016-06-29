@@ -1,6 +1,16 @@
 
-
+var Path= require("path")
 function init(vox, $, window, document){
+
+    //
+    core.baseUrl= "/"
+    core.require= function(module){
+        var src= $("<script>")
+        src.attr("src", Path.join(core.baseUrl, module))
+        $("head").append(src)
+        
+    }
+
 	var Waves= core.VW.Web.Waves;
     Array.prototype.each= Array.prototype.forEach;
     $(function(){
