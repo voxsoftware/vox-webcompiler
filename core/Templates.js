@@ -129,8 +129,6 @@ function init(vox, $, document, root){
 
 
 					if(!self.useshadow){
-						
-						
 						$(clone).find("content").each(function(){
 							var e= $(this);
 							var sel= e.attr("sel");
@@ -160,8 +158,6 @@ function init(vox, $, document, root){
 								}
 								e.replaceWith(nodes);
 							}
-
-
 						});
 
 
@@ -203,10 +199,11 @@ function init(vox, $, document, root){
 		}
 	}
 
-
-
-	// Registrar vw-templat	e 
+	// Registrar vw-template 
 	document.createElement("vw-template");
+
+
+
 
 	var procesar= function(self){
 		setTimeout(function(){
@@ -249,12 +246,9 @@ function init(vox, $, document, root){
 			
 	})
 	vox.mutation.watchAppend($("html,body"), function(ev){
-		
 		ev.jTarget.each(function(){
 			procesar(this);	
 		});
-
-
 	}, "vw-template")
 	exports.Template= Template
 

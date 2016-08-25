@@ -34,6 +34,13 @@ function moduleVW(){
 		}
 		return this.$req;
 	}
+
+	core.VW.get_Moment=function(){
+		if(!this.$moment)
+			this.$moment= require("./moment.js")
+		return this.$moment
+	}
+
 	util.createProperties(core.VW);
 }
 
@@ -126,20 +133,115 @@ function moduleEcma2015(){
 		}
 		return this.$Utils;
 	}
+
+
+	// ESTO NO ESTÁ DEFINIDO SI VA A IR O NO ...
+	/*
+	core.VW.Ecma2015.get_Parser= function(){
+		if(!this.$parser){
+			this.$parser= Requires.module("VW.Ecma2015.Parser")
+		}
+		return this.$parser;
+	}
+
+	core.VW.Ecma2015.get_ArrowFunctionPlugin= function(){
+		if(!this.$arrowfplugin){
+			this.$arrowfplugin= Requires.module("VW.Ecma2015.ArrowFunctionPlugin")
+		}
+		return this.$arrowfplugin;
+	}
+
+	core.VW.Ecma2015.get_AsyncPlugin= function(){
+		if(!this.$asyncplugin){
+			this.$asyncplugin= Requires.module("VW.Ecma2015.AsyncPlugin")
+		}
+		return this.$asyncplugin;
+	}
+
+	core.VW.Ecma2015.get_BlockScopedPlugin= function(){
+		if(!this.$blockplugin){
+			this.$blockplugin= Requires.module("VW.Ecma2015.BlockScopedPlugin")
+		}
+		return this.$blockplugin;
+	}
+
+	core.VW.Ecma2015.get_ClassPlugin= function(){
+		if(!this.$classplugin){
+			this.$classplugin= Requires.module("VW.Ecma2015.ClassPlugin")
+		}
+		return this.$classplugin;
+	}
+
+	core.VW.Ecma2015.get_DestructuringAssignmentPlugin= function(){
+		if(!this.$dasplugin){
+			this.$dasplugin= Requires.module("VW.Ecma2015.DestructuringAssignmentPlugin")
+		}
+		return this.$dasplugin;
+	}
+
+	core.VW.Ecma2015.get_EnhancedObjectPropertiesPlugin= function(){
+		if(!this.$epplugin){
+			this.$epplugin= Requires.module("VW.Ecma2015.EnhancedObjectPropertiesPlugin")
+		}
+		return this.$epplugin;
+	}
+
+	core.VW.Ecma2015.get_ExtendedParametersPlugin= function(){
+		if(!this.$explugin){
+			this.$explugin= Requires.module("VW.Ecma2015.ExtendedParametersPlugin")
+		}
+		return this.$explugin;
+	}
+
+	core.VW.Ecma2015.get_IteratorPlugin= function(){
+		if(!this.$iplugin){
+			this.$iplugin= Requires.module("VW.Ecma2015.IteratorPlugin")
+		}
+		return this.$iplugin;
+	}
+
+	core.VW.Ecma2015.get_ModulePlugin= function(){
+		if(!this.$modulep){
+			this.$modulep= Requires.module("VW.Ecma2015.ModulePlugin")
+		}
+		return this.$modulep;
+	}
+
+	core.VW.Ecma2015.get_TemplateLiteralPlugin= function(){
+		if(!this.$tmplugin){
+			this.$tmplugin= Requires.module("VW.Ecma2015.TemplateLiteralPlugin")
+		}
+		return this.$tmplugin;
+	}
+
+	core.VW.Ecma2015.get_VariablePlugin= function(){
+		if(!this.$varplugin){
+			this.$varplugin= Requires.module("VW.Ecma2015.VariablePlugin")
+		}
+		return this.$varplugin;
+	}
+
+	core.VW.Ecma2015.get_ParseException= function(){
+		if(!this.$parseexception){
+			this.$parseexception= Requires.module("VW.Ecma2015.ParseException")
+		}
+		return this.$parseexception;
+	}
+
+	core.VW.Ecma2015.get_Esprima= function(){
+		if(!this.$esprima){
+			this.$esprima= Requires.module("VW.Ecma2015.Esprima")
+		}
+		return this.$esprima;
+	}
+	*/
 	util.createProperties(core.VW.Ecma2015);
 }
 
 
 function moduleVW_Web(){
 	var c= core.VW.Web= core.VW.Web || {};
-	/*if(typeof window=="object" && typeof window.$ == "object"){
-		c.JQuery= window.$;
-	}
-	else{*/
-		c.JQuery= require("./jquery-2.2.1.js");
-
-	//}
-
+	c.JQuery= require("./jquery-loader.js")
 	var w= (typeof window=="object") ? window : {document:null}
 	w.$= c.JQuery
 	w.jQuery= c.JQuery

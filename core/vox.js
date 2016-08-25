@@ -38,7 +38,11 @@ function init(vox, $, window, document){
 
             task.beforeExpose(function(){
                 try{
-                    var data= JSON.parse(task.result.body)
+                    var data= task.result.body
+                    if(typeof data==="string")
+                        data=JSON.parse(data)
+
+                    
                     if(data && data.error){
                         task.exception= data.error
                     }
@@ -237,10 +241,10 @@ function init(vox, $, window, document){
             var w= parseInt($(window).width());
             var s;
             
-            if(w<560){
+            if(w<600){
                 s= "s";
             }
-            else if(w<800){
+            else if(w<860){
                 s= "sl";
             }
             else if(w<1024){
@@ -516,7 +520,7 @@ function init(vox, $, window, document){
             })
             self.observers.push(observer)
             obj.each(function(){
-                console.info(observer)
+                //console.info(observer)
                 observer.observe(this, { childList: true, subtree: true });
             })
         }
