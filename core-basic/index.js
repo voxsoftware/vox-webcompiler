@@ -21,17 +21,9 @@ var extend= function(obj1, obj2){
 	return obj1
 }
 
+exports.noNativeResolves= function(){
 
-
-exports.default= exports.resolve= function(obj){
-
-	var native=obj["vwc-native"]
-	//vw.info(core.VW.path)
-
-	var obj2;
-
-	if(!native){
-		obj2= {
+	return {
 			"resolve":{
 				"alias":{
 					"buffer": __dirname + "/buffer-replace.js",
@@ -44,15 +36,17 @@ exports.default= exports.resolve= function(obj){
 					"http": __dirname + "/http-replace.js",
 					"https": __dirname + "/https-replace.js",
 					"vox-core": core.VW.path,
-					"bluebird": require.resolve("bluebird")
+					"bluebird": require.resolve("bluebird")	,
+					"voxsoftware-ecma2015-parser": core.VW.Ecma2015.WebParser.__filename
 					/*,
 					"process": __dirname + "/process-obj-replace.js"*/
 				}
 			}
 		}
-	}
-	else{
-		obj2= {
+}
+exports.nativeResolves= function(){
+
+	return {
 			"resolve":{
 				"alias":{
 					"vox-core": core.VW.path,
@@ -60,6 +54,20 @@ exports.default= exports.resolve= function(obj){
 				}
 			}
 		}
+}
+		
+exports.default= exports.resolve= function(obj){
+
+	var native=obj["vwc-native"]
+	//vw.info(core.VW.path)
+
+	var obj2;
+
+	if(!native){
+		obj2= exports.noNativeResolves()
+	}
+	else{
+		obj2= exports.nativeResolves()
 	}
 	extend(obj2, obj||{})
 	obj2.plugins= obj2.plugins||[]

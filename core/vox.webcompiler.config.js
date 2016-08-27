@@ -9,7 +9,7 @@ var data = {
 	},
 	module: {
 	    loaders: [
-	        { test: /\.json$/, loader: "json-loader" }
+	        { test: /\.json$/, loader: require.resolve("json-loader") }
 		]
 	},/*
 	"resolve":{

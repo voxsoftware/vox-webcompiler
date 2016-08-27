@@ -30,7 +30,8 @@
     	"extract-text-webpack-plugin": "^1.x",
     	"symbol": "^0.2.1",
     	"browser-request": "^0.3.3",
-    	"node-waves": "^0.7.5", 
+    	"node-waves": "^0.7.5",
+    	"json-loader": ">0.0.1",
     	"loader-utils": "^0.2.x"
     }
 }
