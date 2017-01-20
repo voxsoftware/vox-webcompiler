@@ -87,9 +87,11 @@ function request(options, callback) {
 
   if(options.json) {
     options.headers.accept = options.headers.accept || 'application/json'
-    console.info("HEERRRRRRRR.....")
-    if(options.method !== 'GET')
-      options.headers['content-type'] = 'application/json'
+    
+    if(options.method !== 'GET'){
+      if(!options.headers["Content-Type"]  && !options.headers["content-type"])
+        options.headers['content-type'] = 'application/json'
+    }
 
     if(typeof options.json !== 'boolean')
       options.body = JSON.stringify(options.json)

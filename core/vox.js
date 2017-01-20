@@ -35,9 +35,12 @@ function init(vox, $, window, document){
         self.getJsonResponseAsync= function(/*core.VW.Http.Request*/ request){
             request.validateStatusCode= true
             var task= request.getResponseAsync()
-
+            //console.info("TASK: ", task)
             task.beforeExpose(function(){
                 try{
+
+
+                    //console.info(task)
                     var data= task.result.body
                     if(typeof data==="string")
                         data=JSON.parse(data)
@@ -240,6 +243,7 @@ function init(vox, $, window, document){
         }
         
         f.bodySize= function(){
+            /*
             var w= parseInt($(window).width());
             var s;
             
@@ -265,6 +269,54 @@ function init(vox, $, window, document){
             b.removeClass("size-ml");
             b.removeClass("size-l");
             b.addClass("size-"+ s);
+            */
+            var o= $("div.size-vox"), row
+            if(o.length==0){
+                o= $("<div>")
+                o.height(100)
+                
+                
+                row= $("<div>")
+                row.css("position","fixed")
+                row.css("top", "-1000px")
+                row.addClass("row")
+                row.addClass("size-vox")
+                row.css("margin", 0)
+                o.addClass("col")
+                o.addClass("s12 sl6 m4 ml3 l1")
+
+                var items=[], g
+                for(var i=0;i<8;i++){
+                    g= o.clone()
+                    row.append(g)
+                }
+
+                $("body").append(row)
+            }
+
+            var size=''
+            if(o.height()>=800)
+                size= "s"
+            else if(o.height()>=400)
+                size= "sl"
+            else if(o.height()>=300)
+                size= "m"
+            else if(o.height()>=200)
+                size= "ml"
+            else 
+                size= "l"
+
+            var b=$("body");
+            b.removeClass("size-s");
+            b.removeClass("size-sl");
+            b.removeClass("size-m");
+            b.removeClass("size-ml");
+            b.removeClass("size-l");
+            b.addClass("size-"+ size);
+
+
+
+
         }
         
         f.processScript= function(script){
