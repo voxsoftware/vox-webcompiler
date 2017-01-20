@@ -206,14 +206,16 @@ function init(vox, $, window, document){
         }
         
         f.processRow= function(obj){
+            var temp= $("<div>")
             obj.each(function(){
                 var j= $(this);
                 var col= j.find(">*");
                 var cols=[];
                 for(var i=0;i<col.length;i++){
                     cols.push(col.eq(i));
+                    temp.append(col.eq(i))
                 }
-                col.remove();
+                //col.remove();
                 for(var i=0;i<cols.length;i++){
                     j.append(cols[i]);
                 }    
