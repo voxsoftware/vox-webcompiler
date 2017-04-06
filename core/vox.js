@@ -1,5 +1,6 @@
 
 var Path= require("path")
+require("./Requires").module("System.String")
 function init(vox, $, window, document){
 
     //
@@ -8,7 +9,7 @@ function init(vox, $, window, document){
         var src= $("<script>")
         src.attr("src", Path.join(core.baseUrl, module))
         $("head").append(src)
-        
+
     }
 
 	var Waves= core.VW.Web.Waves;
@@ -17,18 +18,18 @@ function init(vox, $, window, document){
         Waves.attach('.button');
         Waves.init();
     });
-    
+
     document.createElement("vox-css");
     document.createElement("vox-action");
     document.createElement("vox-object");
     document.createElement("vox-item");
     document.createElement("vox-bindevent");
-    
-    
+
+
     var platform= function(){
         var self= this;
         var f={};
-        
+
         self.scrollObject= $(window);
 
 
@@ -39,13 +40,11 @@ function init(vox, $, window, document){
             task.beforeExpose(function(){
                 try{
 
-
-                    //console.info(task)
                     var data= task.result.body
                     if(typeof data==="string")
                         data=JSON.parse(data)
 
-                    
+
                     if(data && data.error){
                         task.exception= data.error
                     }
@@ -59,44 +58,44 @@ function init(vox, $, window, document){
             return task
         }
 
-      
+
 
         self.attachOuterClick= function(obj, pars){
-            
+
             var self= pars.self;
             var isOpened= pars.active || function(){return true;}
-            
+
             var y= function(ev){
                 if(!isOpened()){
                     return;
                 }
-                
-                
+
+
                 var e= $(ev.target);
                 if((ev.target!= obj.get(0)) && (obj.find(e).length==0)){
-                
+
                     if(pars.processEvent){
                         ev=pars.processEvent(ev);
                     }
                     self.emit("outerclick", ev);
                     if(ev.defaultPrevented){
-                        return; 
+                        return;
                     }
                     if(pars.callback){
                         pars.callback(ev);
                     }
                 }
-                
+
             }
             $(document).bind("click", y);
-            
+
         }
-        
+
         self.attachEvents= function(events, pars){
-            
+
             var self= pars.self;
             var isOpened= pars.active || function(){return true;}
-            
+
             var y= function(ev){
                 if(!isOpened()){
                     return;
@@ -106,40 +105,40 @@ function init(vox, $, window, document){
                 }
                 self.emit(ev.type, ev);
                 if(ev.defaultPrevented){
-                    return; 
+                    return;
                 }
                 if(pars.callback){
                     pars.callback(ev);
                 }
             }
             $(document).bind(events, y);
-            
+
         };
-        
+
         self.transition= function(obj, values, effect, time, cb){
             var callback= cb?cb:function(){};
             var st=[];
             for(var i in values){
                 st.push(i);
             }
-            
+
             obj.css("transition-property", st.join(","));
             if(time){
                 var timec= (time/1000);
                 timec= timec.toString() + "s";
-                obj.css("transition-duration", timec);    
+                obj.css("transition-duration", timec);
             }
             if(effect){
                 obj.addClass(effect);
             }
-            
+
             if(st.length==0){
                 callback();
             }
             obj.css(values);
-            
+
             obj.addClass("transitioned");
-            
+
             setTimeout(function(){
                 obj.removeClass("transitioned");
                 if(effect){
@@ -148,9 +147,9 @@ function init(vox, $, window, document){
                 callback();
             }, time);
         }
-        
+
         self.animate= function(obj, effect, time, cb){
-            
+
             callback= function(){
                 if(hide){
                     obj.hide();
@@ -160,10 +159,10 @@ function init(vox, $, window, document){
                     cb();
                 }
             }
-            
+
             var hide;
             if(effect.toLowerCase().indexOf("out")>=0){
-                
+
                 hide= true;
                 // Es efecto de salida ...
                 if(!obj.is(":visible")){
@@ -175,10 +174,10 @@ function init(vox, $, window, document){
                     return callback();
                 }
             }
-            
-            
+
+
             if(!obj.hasClass("animated")){
-                obj.addClass("animated");    
+                obj.addClass("animated");
             }
             if(obj.data("last-effect")){
                 obj.removeClass(obj.data("last-effect"));
@@ -187,11 +186,11 @@ function init(vox, $, window, document){
             obj.show();
             obj.addClass(effect);
             obj.data("last-effect", effect);
-            
+
             if(!time){
                 time= parseFloat(obj.css("animation-duration"));
                 if(!time){
-                    time= parseFloat(obj.css("-webkit-animation-duration"));    
+                    time= parseFloat(obj.css("-webkit-animation-duration"));
                 }
             }
             else{
@@ -202,12 +201,12 @@ function init(vox, $, window, document){
                     "animation-duration": s
                 });
             }
-            
+
             time= (time*1000) + 1;
             setTimeout(callback, time);
-            
+
         }
-        
+
         f.processRow= function(obj){
             var temp= $("<div>")
             obj.each(function(){
@@ -221,32 +220,32 @@ function init(vox, $, window, document){
                 //col.remove();
                 for(var i=0;i<cols.length;i++){
                     j.append(cols[i]);
-                }    
+                }
             });
         };
-        
+
         if (document.createEvent) {
     		self.createEvent = function(name){
     	        var evt = document.createEvent("Event");
     	        evt.initEvent(name, true, true);
     	        return evt;
     	    }
-    
-        } else if (document.createEventObject) { 
+
+        } else if (document.createEventObject) {
         	// MSIE (NOT WORKING)
         	self.createEvent = function(name){
     	        var evt = document.createEventObject("Event");
     	        evt.type= name;
     	        return evt;
     	    }
-            
+
         }
-        
+
         f.bodySize= function(){
             /*
             var w= parseInt($(window).width());
             var s;
-            
+
             if(w<600){
                 s= "s";
             }
@@ -274,8 +273,8 @@ function init(vox, $, window, document){
             if(o.length==0){
                 o= $("<div>")
                 o.height(100)
-                
-                
+
+
                 row= $("<div>")
                 row.css("position","fixed")
                 row.css("top", "-1000px")
@@ -303,7 +302,7 @@ function init(vox, $, window, document){
                 size= "m"
             else if(o.height()>=200)
                 size= "ml"
-            else 
+            else
                 size= "l"
 
             var b=$("body");
@@ -318,18 +317,18 @@ function init(vox, $, window, document){
 
 
         }
-        
+
         f.processScript= function(script){
             script.each(function(){
                 try{
-                    var s= $(this); 
+                    var s= $(this);
                     var p= s.attr("vox-name")|| "value";
                     var f= eval(s.text());
                     f.script= s;
                     if(p){
-                        s.parent().data(p, f);    
+                        s.parent().data(p, f);
                     }
-                    
+
                     if(s.attr("vox-auto")!=undefined){
                         f(s);
                     }
@@ -342,7 +341,7 @@ function init(vox, $, window, document){
         }
         f.processObjects= function(obj2){
             obj2.each(function(){
-                
+
                 var obj= $(this);
                 if(obj.find("vox-object").length>0){
                    f.processObjects(obj.find("vox-object"));
@@ -357,33 +356,33 @@ function init(vox, $, window, document){
                     if(n){
                         o[n]= g.data("value");
                     }
-                });    
+                });
                 var v=obj.attr("vox-name") || "value";
                 obj.parent().data(v, o);
                 obj.data("vox-processed", true);
-                
+
             });
         }
-        
-        
+
+
         f.processAction= function(obj){
             obj.each(function(){
                 var c= $(this);
                 var s= c.attr("vox-selector");
                 var v= c.data("value");
                 var p= c.parent();
-                
+
                 var u= function(k){
                     k.each(function(){
                        v($(this));
                     });
                 }
                 u(p.find(s));
-                
+
                 vox.mutation.watchAppend(p, function(ev){
                     u(ev.jTarget);
                 }, s);
-                
+
             });
         }
         f.processCss= function(css){
@@ -392,10 +391,10 @@ function init(vox, $, window, document){
                 if(c.attr("vox-type")=="class"){
                     var s= c.attr("vox-selector");
                     var v= c.data("value");
-                    
+
                     var p= c.parent();
                     p.find(s).addClass(v);
-                    
+
                     vox.mutation.watchAppend(p, function(ev){
                         ev.jTarget.addClass(v);
                     }, s);
@@ -403,29 +402,29 @@ function init(vox, $, window, document){
                 else if(c.attr("vox-type")=="style"){
                     var s= c.attr("vox-selector");
                     var v= c.data("value");
-                    
+
                     var p= c.parent();
                     p.find(s).css(v);
-                    
+
                     vox.mutation.watchAppend(p, function(ev){
                         ev.jTarget.css(v);
                     }, s);
                 }
             });
         }
-        
+
         self.merge= function(obj1, obj2){
             return $.merge(obj1, obj2);
         }
-        
+
         f.processChipAction= function(obj){
             obj.click(function(){
                 $(this).parents(".chip").eq(0).remove();
             });
         }
-        
+
         f.processBindEvent= function(obj2){
-            
+
 			obj2.each(function(){
 				var obj= $(this);
 				var name= obj.attr("vox-name");
@@ -437,45 +436,45 @@ function init(vox, $, window, document){
 					}
 				});
 			});
-            
+
         }
-        
+
         self.start= function(){
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processRow(ev.jTarget);
             } , ".row");
             f.processRow($(".row"));
-            
+
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processScript(ev.jTarget);
             } , "script[lang=vox]");
             f.processScript($("script[lang=vox]"));
-            
+
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processObjects(ev.jTarget);
             } , "vox-object");
             f.processObjects($("vox-object"));
-            
+
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processCss(ev.jTarget);
             } , "vox-css");
             f.processCss($("vox-css"));
-            
+
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processAction(ev.jTarget);
             } , "vox-action");
             f.processAction($("vox-action"));
-            
+
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processChipAction(ev.jTarget);
             } , ".chip .action");
             f.processChipAction($(".chip .action"));
-            
+
             vox.mutation.watchAppend($("body"),function(ev){
                 return f.processBindEvent(ev.jTarget);
             } , "vox-bindevent");
             f.processBindEvent($("vox-bindevent"));
-            
+
             var re= function(){
                 if(re.y){
                     clearTimeout(re.y);
@@ -488,84 +487,84 @@ function init(vox, $, window, document){
             }
             $(window).resize(re);
             re();
-            
+
         }
     }
-    
+
     var mutation= function(){
         var self= this;
         var f={};
-        
+
         self.watchAppend= function(obj, callback2, filter){
             var callback=function(ev){
                 var j1= ev.jTarget.not("[vox-watched]");
                 var j2= ev.jTarget.is("[vox-watched]");
-                
+
                 ev.moved= true;
                 ev.jTarget= j2;
                 if(j2.length>0){
                     callback2(ev);
                 }
-                
+
                 ev.moved= false;
                 ev.jTarget= j1;
                 if(j1.length>0){
                     callback2(ev);
                 }
-                
+
                 j1.attr("vox-matched","");
             };
             /*
             obj.bind("DOMNodeInserted", function(ev){
                 var inserted= $(ev.target);
                 var v=true;
-                
+
                 if(filter){
                     var all= inserted.find("*");
                     all= all.filter(filter);
-                    
+
                     if(all.length>0){
                         ev.jTarget= all;
                         callback(ev);
                     }
-                }  
-                
-                
+                }
+
+
                 if(filter){
                     if(!inserted.is(filter)){
                         v=false;
                     }
                 }
-                
+
                 if(v){
                     ev.jTarget= inserted;
                     callback(ev);
                 }
-                
+
             });*/
             var observer= new MutationObserver(function(events){
                 for(var i=0;i<events.length;i++){
                     var ev= events[i]
                     var inserted= $(ev.addedNodes);
                     var v=true;
-                    
+
                     if(filter){
                         var all= inserted.find("*");
                         all= all.filter(filter);
-                        
+
                         if(all.length>0){
                             ev.jTarget= all;
                             callback(ev);
                         }
-                    }  
-                    
-                    
+                    }
+
+
                     if(filter){
                         if(!inserted.is(filter)){
                             v=false;
                         }
                     }
-                    
+
                     if(v){
                         ev.jTarget= inserted;
                         callback(ev);
@@ -578,10 +577,10 @@ function init(vox, $, window, document){
                 observer.observe(this, { childList: true, subtree: true });
             })
         }
-        
+
     }
-    
-    
+
+
     vox.platform= new platform();
     vox.mutation= new mutation();
     vox.mutation.observers=[];
@@ -595,7 +594,7 @@ function init(vox, $, window, document){
         if (window.voxpreinit) {
             window.voxpreinit();
         }
-        vox.platform.start();    
+        vox.platform.start();
     });
 }
 

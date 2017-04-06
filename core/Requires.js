@@ -15,6 +15,10 @@ exports.module= function(name){
 		return require("vox-core/submodules/vox-core-async/src/VW/Task.js")
 	}
 
+	if(name=="System.String"){
+		return require("vox-core/submodules/vox-core-base/src/System/String.js")
+	}
+
 	if(name=="VW.Ecma2015.runtime"){
 		return require("vox-core/submodules/vox-core-es6/src/VW/Ecma2015/runtime.js")
 	}

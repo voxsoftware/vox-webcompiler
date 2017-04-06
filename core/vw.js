@@ -134,14 +134,14 @@ function moduleEcma2015(){
 		return this.$Utils;
 	}
 
-	/*	
+	/*
 	core.VW.Ecma2015.get_Parser= function(){
 		if(!this.$parser){
 			this.$parser= require("voxsoftware-ecma2015-parser")
 		}
 		return this.$parser;
 	}*/
-	
+
 
 	// ESTO NO ESTÁ DEFINIDO SI VA A IR O NO ...
 	/*

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// UMD HEADER START 
+// UMD HEADER START
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -53,8 +53,8 @@ function request(options, callback) {
 
   if(typeof options === 'string')
     options = {'uri':options};
-  else
-    options = JSON.parse(JSON.stringify(options)); // Use a duplicate for mutating.
+  //else
+  //  options = JSON.parse(JSON.stringify(options)); // Use a duplicate for mutating.
 
   options.onResponse = options_onResponse // And put it back.
 
@@ -87,7 +87,7 @@ function request(options, callback) {
 
   if(options.json) {
     options.headers.accept = options.headers.accept || 'application/json'
-    
+
     if(options.method !== 'GET'){
       if(!options.headers["Content-Type"]  && !options.headers["content-type"])
         options.headers['content-type'] = 'application/json'
@@ -98,7 +98,7 @@ function request(options, callback) {
     else if(typeof options.body !== 'string')
       options.body = JSON.stringify(options.body)
   }
-  
+
   //BEGIN QS Hack
   var serialize = function(obj) {
     var str = [];
@@ -108,7 +108,7 @@ function request(options, callback) {
       }
     return str.join("&");
   }
-  
+
   if(options.qs){
     var qs = (typeof options.qs == 'string')? options.qs : serialize(options.qs);
     if(options.uri.indexOf('?') !== -1){ //no get params
@@ -118,7 +118,7 @@ function request(options, callback) {
     }
   }
   //END QS Hack
-  
+
   //BEGIN FORM Hack
   var multipart = function(obj) {
     //todo: support file type (useful?)
@@ -141,7 +141,7 @@ function request(options, callback) {
     result.type = 'multipart/form-data; boundary='+result.boundry;
     return result;
   }
-  
+
   if(options.form){
     if(typeof options.form == 'string') throw('form name unsupported');
     if(options.method === 'POST'){
@@ -155,10 +155,10 @@ function request(options, callback) {
                 options.body = serialize(options.form).replace(/%20/g, "+");
                 break;
             case 'multipart/form-data':
-                var multi = multipart(options.form);
+                //var multi = multipart(options.form);
                 //options.headers['content-length'] = multi.length;
-                options.body = multi.body;
-                options.headers['content-type'] = multi.type;
+                //options.body = multi.body;
+                options.headers['content-type'] = undefined;// multi.type + "; boundary="+ options.body.boundary;
                 break;
             default : throw new Error('unsupported encoding:'+encoding);
         }
@@ -196,6 +196,10 @@ function run_xhr(options) {
   xhr.seq_id = req_seq
   xhr.id = req_seq + ': ' + options.method + ' ' + options.uri
   xhr._id = xhr.id // I know I will type "_id" from habit all the time.
+  if(options.body instanceof FormData ){
+    delete options.headers["content-type"]
+    //console.info("HEADERS", options.headers)
+  }
 
   if(is_cors && !supports_cors) {
     var cors_err = new Error('Browser does not support cross-origin request: ' + options.uri)
@@ -221,6 +225,9 @@ function run_xhr(options) {
   xhr.open(options.method, options.uri, true) // asynchronous
   if(is_cors)
     xhr.withCredentials = !! options.withCredentials
+
+
+
   xhr.send(options.body)
   return xhr
 
