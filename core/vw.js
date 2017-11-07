@@ -134,6 +134,10 @@ function moduleEcma2015(){
 		return this.$Utils;
 	}
 
+	if(!global.Promise){
+		global.Promise= core.VW.Ecma2015.get_Promise()
+	}
+
 	/*
 	core.VW.Ecma2015.get_Parser= function(){
 		if(!this.$parser){

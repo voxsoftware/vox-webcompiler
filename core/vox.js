@@ -491,11 +491,36 @@ function init(vox, $, window, document){
         }
     }
 
+    $.fn.equals = function(compareTo) {
+      if (!compareTo || this.length != compareTo.length) {
+        return false;
+      }
+      for (var i = 0; i < this.length; ++i) {
+        if (this[i] !== compareTo[i]) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+
+    var addToCallback= function(func1,func2){
+        return function(){
+            func1.apply(func1,arguments)
+            func2.apply(func2,arguments)
+        }
+    }
+
     var mutation= function(){
         var self= this;
         var f={};
-
+        self.observersC=self.observersC ||[]
         self.watchAppend= function(obj, callback2, filter){
+
+
+            var args={}
+
+
             var callback=function(ev){
                 var j1= ev.jTarget.not("[vox-watched]");
                 var j2= ev.jTarget.is("[vox-watched]");
@@ -513,63 +538,111 @@ function init(vox, $, window, document){
                 }
 
                 j1.attr("vox-matched","");
-            };
-            /*
-            obj.bind("DOMNodeInserted", function(ev){
-                var inserted= $(ev.target);
-                var v=true;
 
-                if(filter){
-                    var all= inserted.find("*");
-                    all= all.filter(filter);
 
-                    if(all.length>0){
-                        ev.jTarget= all;
-                        callback(ev);
+            }
+            args.filters= [{
+                callback:callback,
+                filter:filter
+            }]
+
+
+
+            if(self.observersC){
+                // Tratar de filtrar sihay un watchAppend al mismo objeto ...
+                var filters,data=self.observersC.filter(function(a){
+                    return a.target.equals(obj)
+                })
+                if(data&&data.length){
+                    // Crear un callback a partir del anterior
+                    filters=data[0].args.filters
+                    if(filters.indexOf(filter)<0){
+                        filters.push({
+                            filter:filter,
+                            callback:callback
+                        })
                     }
+                    //data[0].callback.f= addToCallback(data[0].callback.f || data[0].callback, callback)
+                    return
                 }
 
+            }
 
-                if(filter){
-                    if(!inserted.is(filter)){
-                        v=false;
-                    }
-                }
 
-                if(v){
-                    ev.jTarget= inserted;
-                    callback(ev);
-                }
-
-            });*/
             var observer= new MutationObserver(function(events){
+                events= events.filter(function(a){
+                    return a.addedNodes.length
+                })
+                var inserted=[], ev, cache={}, node
+                if(!events.length)
+                    return
+
                 for(var i=0;i<events.length;i++){
-                    var ev= events[i]
-                    var inserted= $(ev.addedNodes);
-                    var v=true;
-
-                    if(filter){
-                        var all= inserted.find("*");
-                        all= all.filter(filter);
-
-                        if(all.length>0){
-                            ev.jTarget= all;
-                            callback(ev);
-                        }
-                    }
-
-
-                    if(filter){
-                        if(!inserted.is(filter)){
-                            v=false;
-                        }
-                    }
-
-                    if(v){
-                        ev.jTarget= inserted;
-                        callback(ev);
+                    ev= events[i]
+                    for(var y=0;y<ev.addedNodes.length;y++){
+                        node= ev.addedNodes[y]
+                        //if(!node._id){
+                            //node._id= node._id || (i+Date.now().toString(32))
+                            //if(!cache[node._id]){
+                                inserted.push(ev.addedNodes[y])
+                            //    cache[node._id]= true
+                            //}
+                        //}
                     }
                 }
+                inserted= $(inserted)
+                var all1= inserted.find("*")
+                for(var i=0;i<inserted.length;i++){
+                  all1.push(inserted[i])
+                }
+
+				inserted=null
+                inserted= all1
+				all1=null
+                setTimeout(function(){
+
+                    var item
+                    for(var y=0;y<args.filters.length;y++){
+                        item= args.filters[y]
+                        filter= item.filter
+
+                        var v=true
+                        //var all= inserted.find("*").filter(filter)//inserted.find(filter||"*")
+                        var all =inserted.filter(filter)
+                        /*for(var i=0;i<others.length;i++){
+                            all= all.add(others.eq(i))
+                        }*/
+
+                        if(filter){
+                          if(all.length>0 && global.debug)
+                            console.info("WATCHING FILTER .....", filter, "Len:", all.length)
+                          /*
+                          if(others.length>0){
+                             ev.jTarget= others;
+                              item.callback(ev);
+                          }*/
+                            if(all.length>0){
+                                ev.jTarget= all;
+                                item.callback(ev);
+                            }
+                        }
+                    }
+
+
+					inserted=null
+					ev.jTarget=null
+					ev=null
+					all=null
+
+                },0)
+
+
+            })
+
+            self.observersC.push({
+                target:obj,
+                observer:observer,
+                args:args
             })
             self.observers.push(observer)
             obj.each(function(){

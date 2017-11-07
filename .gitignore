@@ -1,2 +1,4 @@
 node_modules/
 /.project
+rsync.sh
+rsync.delete.sh

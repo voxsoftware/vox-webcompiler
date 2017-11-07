@@ -42,6 +42,10 @@ var DEFAULT_TIMEOUT = 3 * 60 * 1000 // 3 minutes
 //
 
 function request(options, callback) {
+
+
+
+
   // The entry-point to the API: prep the options object and pass the real work to run_xhr.
   if(typeof callback !== 'function')
     throw new Error('Bad callback given: ' + callback)
@@ -196,6 +200,15 @@ function run_xhr(options) {
   xhr.seq_id = req_seq
   xhr.id = req_seq + ': ' + options.method + ' ' + options.uri
   xhr._id = xhr.id // I know I will type "_id" from habit all the time.
+
+	if(options.responseType)
+		xhr.responseType=options.responseType
+  if(options.events){
+    for(var id in options.events){
+      xhr.upload["on"+id]= options.events[id]
+    }
+  }
+
   if(options.body instanceof FormData ){
     delete options.headers["content-type"]
     //console.info("HEADERS", options.headers)
@@ -298,7 +311,9 @@ function run_xhr(options) {
     did.end = true
     request.log.debug('Request done', {'id':xhr.id})
 
-    xhr.body = xhr.responseText
+	try{
+    	xhr.body = xhr.responseText
+	}catch(e){xhr.body = xhr.response}
     if(options.json) {
       try        { xhr.body = JSON.parse(xhr.responseText) }
       catch (er) { return options.callback(er, xhr)        }
